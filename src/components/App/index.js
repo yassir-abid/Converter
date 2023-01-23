@@ -24,6 +24,18 @@ class App extends React.Component {
     this.makeConversion = this.makeConversion.bind(this);
   }
 
+  componentDidMount() {
+    const { selectedCurrency } = this.state;
+    document.title = `Conversion from euro to ${selectedCurrency}`;
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { selectedCurrency } = this.state;
+    if (prevState.selectedCurrency !== selectedCurrency) {
+      document.title = `Conversion from euro to ${selectedCurrency}`;
+    }
+  }
+
   handleTogglerClick() {
     const { isListOpen } = this.state;
     this.setState({ isListOpen: !isListOpen });
