@@ -21,3 +21,25 @@
     font-size: 2rem;
   }
 }
+
+@media (orientation: landscape) {
+  .result {
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 2rem 1rem;
+    row-gap: 0;
+    column-gap: 2rem;
+  }
+}
+
+@media (max-height: 700px) and (orientation: portrait) {
+  .result {
+    &__amount {
+      font-size: 2.5rem;
+    }
+
+    &__currency {
+      font-size: 1.5rem;
+    }
+  }
+}

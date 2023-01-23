@@ -16,11 +16,13 @@ class App extends React.Component {
       isListOpen: true,
       baseAmount: 1,
       selectedCurrency: 'United States Dollar',
+      searchedCurrency: '',
     };
 
     this.handleTogglerClick = this.handleTogglerClick.bind(this);
     this.handleCurrencyClick = this.handleCurrencyClick.bind(this);
     this.handleInputBaseAmountChange = this.handleInputBaseAmountChange.bind(this);
+    this.handleInputCurrencyChange = this.handleInputCurrencyChange.bind(this);
     this.makeConversion = this.makeConversion.bind(this);
   }
 
@@ -53,6 +55,10 @@ class App extends React.Component {
     this.setState({ baseAmount: value });
   }
 
+  handleInputCurrencyChange(event) {
+    this.setState({ searchedCurrency: event.target.value });
+  }
+
   makeConversion() {
     const { baseAmount, selectedCurrency } = this.state;
     const foundCurrency = currenciesList
@@ -64,7 +70,10 @@ class App extends React.Component {
   }
 
   render() {
-    const { isListOpen, baseAmount, selectedCurrency } = this.state;
+    const {
+      isListOpen, baseAmount, selectedCurrency, searchedCurrency,
+    } = this.state;
+
     return (
       <div className="app">
         <Header
@@ -78,7 +87,9 @@ class App extends React.Component {
         {isListOpen && (
           <Currencies
             currencies={currenciesList}
+            searchedCurrency={searchedCurrency}
             onCurrencyClick={this.handleCurrencyClick}
+            onInputCurrencyChange={this.handleInputCurrencyChange}
           />
         )}
         <Result

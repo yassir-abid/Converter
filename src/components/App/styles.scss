@@ -3,3 +3,9 @@
   padding: 2vh;
   border-radius: 15px;
 }
+
+@media (max-height: 350px) {
+  .app {
+    padding: 0;
+  }
+}

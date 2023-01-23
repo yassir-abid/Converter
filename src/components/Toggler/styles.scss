@@ -22,3 +22,10 @@
     transform: rotate(90deg);
   }
 }
+
+@media (max-width: 750px),
+(max-height: 750px) and (orientation: portrait) {
+  .toggler {
+    margin: -25px 0 -25px 15px;
+  }
+}

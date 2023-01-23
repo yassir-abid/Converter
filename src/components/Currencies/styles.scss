@@ -18,6 +18,13 @@
     &__title {
       font-weight: bold;
     }
+
+    &__input {
+      color: vars.$primaryColor;
+      padding: 0.5rem;
+      border: 2px solid vars.$secondaryColor;
+      border-radius: 10px;
+    }
   }
 
   &__list {
@@ -32,6 +39,27 @@
       &:hover {
         background-color: vars.$secondaryColor;
         transition: background-color vars.$fastTransition;
+      }
+    }
+  }
+}
+
+@media (max-width: 750px),
+(max-height: 750px) and (orientation: portrait) {
+  .currencies {
+    padding: 2rem 0 1rem 0;
+  }
+}
+
+@media (max-width: 370px) {
+  .currencies {
+    &__header {
+      flex-direction: column;
+      align-items: flex-start;
+      row-gap: 1rem;
+
+      &__input {
+        width: 100%;
       }
     }
   }
