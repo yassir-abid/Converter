@@ -13,27 +13,44 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      isListOpen: false,
+      isListOpen: true,
+      baseAmount: 1,
+      selectedCurrency: 'United States Dollar',
     };
 
     this.handleButtonClick = this.handleButtonClick.bind(this);
+    this.makeConversion = this.makeConversion.bind(this);
   }
 
   handleButtonClick() {
-    this.setState({ isListOpen: !this.state.isListOpen });
+    const { isListOpen } = this.state;
+    this.setState({ isListOpen: !isListOpen });
+  }
+
+  makeConversion() {
+    const { baseAmount, selectedCurrency } = this.state;
+    const foundCurrency = currenciesList
+      .find((currency) => currency.name === selectedCurrency);
+    const convertedAmount = foundCurrency.rate * baseAmount;
+    const convertedAmountFixed = parseFloat(convertedAmount.toFixed(2));
+
+    return convertedAmountFixed;
   }
 
   render() {
-    const { isListOpen } = this.state;
+    const { isListOpen, baseAmount, selectedCurrency } = this.state;
     return (
       <div className="app">
-        <Header baseAmount={1} />
+        <Header baseAmount={baseAmount} />
         <Toggler
           isOpen={isListOpen}
           onButtonClick={this.handleButtonClick}
         />
         {isListOpen && (<Currencies currencies={currenciesList} />)}
-        <Result value={1.09} selectedCurrency="United States Dollar" />
+        <Result
+          value={this.makeConversion()}
+          selectedCurrency={selectedCurrency}
+        />
       </div>
     );
   }
