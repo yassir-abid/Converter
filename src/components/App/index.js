@@ -1,14 +1,16 @@
-// == Import
+import Header from 'src/components/Header';
+import Currencies from 'src/components/Currencies';
+import Result from 'src/components/Result';
 import './styles.css';
 
-// == Composant
 function App() {
   return (
     <div className="app">
-      <h1>Converter</h1>
+      <Header />
+      <Currencies />
+      <Result />
     </div>
   );
 }
 
-// == Export
 export default App;
