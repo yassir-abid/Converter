@@ -1,0 +1,23 @@
+@use 'src/styles/vars';
+
+.result {
+  background-color: vars.$lightColor;
+  color: vars.$primaryColor;
+  padding: 2rem 0;
+  text-align: center;
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+
+  &__amount {
+    font-weight: bold;
+    font-size: 3rem;
+  }
+
+  &__currency {
+    font-size: 2rem;
+  }
+}
