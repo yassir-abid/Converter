@@ -19,17 +19,17 @@ function Currencies({
       </div>
       <ul className="currencies__list">
         {
-          currencies
-            .filter((currency) => (
-              currency.name.toLowerCase().includes(searchedCurrency.toLowerCase())
+          Object.keys(currencies)
+            .filter((key) => (
+              currencies[key].toLowerCase().includes(searchedCurrency.toLowerCase())
             ))
-            .map((currency) => (
+            .map((key) => (
               <li
-                key={currency.name}
+                key={key}
                 className="currencies__list__item"
-                onClick={() => onCurrencyClick(currency.name)}
+                onClick={() => onCurrencyClick({ symbol: key, name: currencies[key] })}
               >
-                {currency.name}
+                {currencies[key]}
               </li>
             ))
         }
@@ -39,14 +39,7 @@ function Currencies({
 }
 
 Currencies.propTypes = {
-  currencies: PropTypes.arrayOf(
-    PropTypes.shape(
-      {
-        name: PropTypes.string.isRequired,
-        rate: PropTypes.number.isRequired,
-      },
-    ).isRequired,
-  ).isRequired,
+  currencies: PropTypes.object.isRequired,
   onCurrencyClick: PropTypes.func.isRequired,
   searchedCurrency: PropTypes.string.isRequired,
   onInputCurrencyChange: PropTypes.func.isRequired,

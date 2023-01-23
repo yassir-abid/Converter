@@ -54,6 +54,7 @@
       font-weight: 300;
       font-size: 1em;
       border-top: 1px solid vars.$secondaryColor;
+      text-transform: capitalize;
       transition: background-color vars.$slowTransition;
       cursor: pointer;
 

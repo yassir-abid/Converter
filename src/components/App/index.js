@@ -1,17 +1,18 @@
-/* eslint-disable react/prefer-stateless-function */
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 import Header from 'src/components/Header';
 import Currencies from 'src/components/Currencies';
 import Result from 'src/components/Result';
 import Toggler from 'src/components/Toggler';
-import currenciesList from 'src/data/currencies';
 import './styles.scss';
 
 function App() {
+  const [currencies, setCurrencies] = useState([]);
+  const [rate, setRate] = useState(0);
   const [isListOpen, setIsListOpen] = useState(true);
   const [baseAmount, setBaseAmount] = useState(1);
-  const [selectedCurrency, setSelectedCurrency] = useState('United States Dollar');
+  const [selectedCurrency, setSelectedCurrency] = useState({ symbol: 'usd', name: 'United States dollar' });
   const [searchedCurrency, setSearchedCurrency] = useState('');
 
   const handleTogglerClick = () => {
@@ -35,17 +36,42 @@ function App() {
   };
 
   const makeConversion = () => {
-    const foundCurrency = currenciesList
-      .find((currency) => currency.name === selectedCurrency);
-    const convertedAmount = foundCurrency.rate * baseAmount;
+    const convertedAmount = rate * baseAmount;
     const convertedAmountFixed = parseFloat(convertedAmount.toFixed(2));
-
     return convertedAmountFixed;
   };
 
+  const loadCurrencies = async () => {
+    try {
+      const response = await axios.get('https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies.json');
+      setCurrencies(response.data);
+    }
+    catch (error) {
+      console.error(error);
+    }
+  };
+
+  const loadRate = async () => {
+    try {
+      const response = await axios.get(`https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/${selectedCurrency.symbol}.json`);
+      setRate(response.data[selectedCurrency.symbol]);
+    }
+    catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    document.title = `Conversion from euro to ${selectedCurrency}`;
+    document.title = `Conversion from euro to ${selectedCurrency.name}`;
   });
+
+  useEffect(() => {
+    loadCurrencies();
+  }, []);
+
+  useEffect(() => {
+    loadRate();
+  }, [selectedCurrency]);
 
   return (
     <div className="app">
@@ -59,7 +85,7 @@ function App() {
       />
       {isListOpen && (
         <Currencies
-          currencies={currenciesList}
+          currencies={currencies}
           searchedCurrency={searchedCurrency}
           onCurrencyClick={handleCurrencyClick}
           onInputCurrencyChange={handleInputCurrencyChange}
@@ -67,7 +93,7 @@ function App() {
       )}
       <Result
         value={makeConversion()}
-        selectedCurrency={selectedCurrency}
+        selectedCurrency={selectedCurrency.name}
       />
     </div>
   );
