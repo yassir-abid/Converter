@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import './styles.scss';
 
-function Currencies({ currencies }) {
+function Currencies({ currencies, onCurrencyClick }) {
   return (
     <div className="currencies">
       <div className="currencies__header">
@@ -14,6 +14,7 @@ function Currencies({ currencies }) {
             <li
               key={currency.name}
               className="currencies__list__item"
+              onClick={() => onCurrencyClick(currency.name)}
             >
               {currency.name}
             </li>
@@ -33,6 +34,7 @@ Currencies.propTypes = {
       },
     ).isRequired,
   ).isRequired,
+  onCurrencyClick: PropTypes.func.isRequired,
 };
 
 export default Currencies;

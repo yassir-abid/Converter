@@ -18,13 +18,18 @@ class App extends React.Component {
       selectedCurrency: 'United States Dollar',
     };
 
-    this.handleButtonClick = this.handleButtonClick.bind(this);
+    this.handleTogglerClick = this.handleTogglerClick.bind(this);
+    this.handleCurrencyClick = this.handleCurrencyClick.bind(this);
     this.makeConversion = this.makeConversion.bind(this);
   }
 
-  handleButtonClick() {
+  handleTogglerClick() {
     const { isListOpen } = this.state;
     this.setState({ isListOpen: !isListOpen });
+  }
+
+  handleCurrencyClick(newCurrency) {
+    this.setState({ selectedCurrency: newCurrency });
   }
 
   makeConversion() {
@@ -44,9 +49,14 @@ class App extends React.Component {
         <Header baseAmount={baseAmount} />
         <Toggler
           isOpen={isListOpen}
-          onButtonClick={this.handleButtonClick}
+          onButtonClick={this.handleTogglerClick}
         />
-        {isListOpen && (<Currencies currencies={currenciesList} />)}
+        {isListOpen && (
+          <Currencies
+            currencies={currenciesList}
+            onCurrencyClick={this.handleCurrencyClick}
+          />
+        )}
         <Result
           value={this.makeConversion()}
           selectedCurrency={selectedCurrency}
