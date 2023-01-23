@@ -9,7 +9,7 @@ function App() {
     <div className="app">
       <Header baseAmount={1} />
       <Currencies currencies={currenciesList} />
-      <Result />
+      <Result value={1.09} selectedCurrency="United States Dollar" />
     </div>
   );
 }
