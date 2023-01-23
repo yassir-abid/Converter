@@ -4,7 +4,7 @@ This app is a simple currency converter. The base currency is fixed and is euro.
 
 This project was developed with React, to discover and practice the basic concepts: function and class components, dumb and smart components, life cycle, props and proptypes, state, hooks...
 
-## [See app website]()
+## [See app website](https://euro-converter-app.netlify.app/)
 
 ## App launch
 
