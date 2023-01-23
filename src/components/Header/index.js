@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import './styles.scss';
 
-function Header({ baseAmount }) {
+function Header({ baseAmount, onInputBaseAmountChange }) {
   return (
     <header className="header">
       <h1 className="header__title">Converter</h1>
@@ -11,7 +11,8 @@ function Header({ baseAmount }) {
           className="header__base-amount__input"
           type="number"
           placeholder="Amount in Euros"
-          value={baseAmount}
+          value={baseAmount !== 0 && baseAmount}
+          onChange={onInputBaseAmountChange}
         />
         <p className="header__base-amount__currency">&euro;</p>
       </div>
@@ -21,6 +22,7 @@ function Header({ baseAmount }) {
 
 Header.propTypes = {
   baseAmount: PropTypes.number.isRequired,
+  onInputBaseAmountChange: PropTypes.func.isRequired,
 };
 
 export default Header;

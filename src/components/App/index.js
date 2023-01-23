@@ -20,6 +20,7 @@ class App extends React.Component {
 
     this.handleTogglerClick = this.handleTogglerClick.bind(this);
     this.handleCurrencyClick = this.handleCurrencyClick.bind(this);
+    this.handleInputBaseAmountChange = this.handleInputBaseAmountChange.bind(this);
     this.makeConversion = this.makeConversion.bind(this);
   }
 
@@ -30,6 +31,14 @@ class App extends React.Component {
 
   handleCurrencyClick(newCurrency) {
     this.setState({ selectedCurrency: newCurrency });
+  }
+
+  handleInputBaseAmountChange(event) {
+    let value = event.target.valueAsNumber;
+    if (Number.isNaN(value)) {
+      value = 0;
+    }
+    this.setState({ baseAmount: value });
   }
 
   makeConversion() {
@@ -46,7 +55,10 @@ class App extends React.Component {
     const { isListOpen, baseAmount, selectedCurrency } = this.state;
     return (
       <div className="app">
-        <Header baseAmount={baseAmount} />
+        <Header
+          baseAmount={baseAmount}
+          onInputBaseAmountChange={this.handleInputBaseAmountChange}
+        />
         <Toggler
           isOpen={isListOpen}
           onButtonClick={this.handleTogglerClick}
