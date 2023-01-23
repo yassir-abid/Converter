@@ -1,5 +1,5 @@
 /* eslint-disable react/prefer-stateless-function */
-import React from 'react';
+import { useEffect, useState } from 'react';
 
 import Header from 'src/components/Header';
 import Currencies from 'src/components/Currencies';
@@ -8,97 +8,69 @@ import Toggler from 'src/components/Toggler';
 import currenciesList from 'src/data/currencies';
 import './styles.scss';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
+function App() {
+  const [isListOpen, setIsListOpen] = useState(true);
+  const [baseAmount, setBaseAmount] = useState(1);
+  const [selectedCurrency, setSelectedCurrency] = useState('United States Dollar');
+  const [searchedCurrency, setSearchedCurrency] = useState('');
 
-    this.state = {
-      isListOpen: true,
-      baseAmount: 1,
-      selectedCurrency: 'United States Dollar',
-      searchedCurrency: '',
-    };
+  const handleTogglerClick = () => {
+    setIsListOpen(!isListOpen);
+  };
 
-    this.handleTogglerClick = this.handleTogglerClick.bind(this);
-    this.handleCurrencyClick = this.handleCurrencyClick.bind(this);
-    this.handleInputBaseAmountChange = this.handleInputBaseAmountChange.bind(this);
-    this.handleInputCurrencyChange = this.handleInputCurrencyChange.bind(this);
-    this.makeConversion = this.makeConversion.bind(this);
-  }
+  const handleCurrencyClick = (newCurrency) => {
+    setSelectedCurrency(newCurrency);
+  };
 
-  componentDidMount() {
-    const { selectedCurrency } = this.state;
-    document.title = `Conversion from euro to ${selectedCurrency}`;
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const { selectedCurrency } = this.state;
-    if (prevState.selectedCurrency !== selectedCurrency) {
-      document.title = `Conversion from euro to ${selectedCurrency}`;
-    }
-  }
-
-  handleTogglerClick() {
-    const { isListOpen } = this.state;
-    this.setState({ isListOpen: !isListOpen });
-  }
-
-  handleCurrencyClick(newCurrency) {
-    this.setState({ selectedCurrency: newCurrency });
-  }
-
-  handleInputBaseAmountChange(event) {
+  const handleInputBaseAmountChange = (event) => {
     let value = event.target.valueAsNumber;
     if (Number.isNaN(value)) {
       value = 0;
     }
-    this.setState({ baseAmount: value });
-  }
+    setBaseAmount(value);
+  };
 
-  handleInputCurrencyChange(event) {
-    this.setState({ searchedCurrency: event.target.value });
-  }
+  const handleInputCurrencyChange = (event) => {
+    setSearchedCurrency(event.target.value);
+  };
 
-  makeConversion() {
-    const { baseAmount, selectedCurrency } = this.state;
+  const makeConversion = () => {
     const foundCurrency = currenciesList
       .find((currency) => currency.name === selectedCurrency);
     const convertedAmount = foundCurrency.rate * baseAmount;
     const convertedAmountFixed = parseFloat(convertedAmount.toFixed(2));
 
     return convertedAmountFixed;
-  }
+  };
 
-  render() {
-    const {
-      isListOpen, baseAmount, selectedCurrency, searchedCurrency,
-    } = this.state;
+  useEffect(() => {
+    document.title = `Conversion from euro to ${selectedCurrency}`;
+  });
 
-    return (
-      <div className="app">
-        <Header
-          baseAmount={baseAmount}
-          onInputBaseAmountChange={this.handleInputBaseAmountChange}
+  return (
+    <div className="app">
+      <Header
+        baseAmount={baseAmount}
+        onInputBaseAmountChange={handleInputBaseAmountChange}
+      />
+      <Toggler
+        isOpen={isListOpen}
+        onButtonClick={handleTogglerClick}
+      />
+      {isListOpen && (
+        <Currencies
+          currencies={currenciesList}
+          searchedCurrency={searchedCurrency}
+          onCurrencyClick={handleCurrencyClick}
+          onInputCurrencyChange={handleInputCurrencyChange}
         />
-        <Toggler
-          isOpen={isListOpen}
-          onButtonClick={this.handleTogglerClick}
-        />
-        {isListOpen && (
-          <Currencies
-            currencies={currenciesList}
-            searchedCurrency={searchedCurrency}
-            onCurrencyClick={this.handleCurrencyClick}
-            onInputCurrencyChange={this.handleInputCurrencyChange}
-          />
-        )}
-        <Result
-          value={this.makeConversion()}
-          selectedCurrency={selectedCurrency}
-        />
-      </div>
-    );
-  }
+      )}
+      <Result
+        value={makeConversion()}
+        selectedCurrency={selectedCurrency}
+      />
+    </div>
+  );
 }
 
 export default App;
