@@ -1,7 +1,7 @@
 import Header from 'src/components/Header';
 import Currencies from 'src/components/Currencies';
 import Result from 'src/components/Result';
-import './styles.css';
+import './styles.scss';
 
 function App() {
   return (
